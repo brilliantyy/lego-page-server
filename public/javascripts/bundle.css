@@ -1,0 +1,13 @@
+.swiper-container-horizontal > .swiper-pagination-bullets {
+    bottom: 0;
+}
+.swiper-pagination-bullet-active {
+    background: rgba(255, 255, 255, .6);
+}
+.swiper-slide {
+    overflow: hidden;
+}
+.swiper-slide img {
+    height: 100%;
+    width: 100%;
+}

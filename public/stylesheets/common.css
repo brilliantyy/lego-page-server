@@ -1,0 +1,15 @@
+body {
+  padding: 0;
+  margin: 0;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.cmp-text {
+  margin: 0;
+}
+
+.cmp-image {
+
+}
