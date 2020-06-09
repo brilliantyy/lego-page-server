@@ -3,9 +3,13 @@ const path = require('path')
 const fs = require('fs')
 const crypto = require('crypto')
 const router = express.Router()
-const { renderPage } = require('../ssr/app.js')
+const { renderPage } = require('../utils/ssr.js')
 const { formatDate } = require('../utils')
 const { getList, getDetail, getDetailWithCreatorId, updateDetail, create } = require('../controller/project')
+
+const serverInfo =
+  `express/${require('express/package.json').version} ` +
+  `vue-server-renderer/${require('vue-server-renderer/package.json').version}`
 
 router.get('/list', (req, res, next) => {
     getList(1).then(result => {
@@ -149,17 +153,17 @@ router.get('/active', (req, res, next) => {
         
             if (renderType === 1) {
                 try {
-                    const { pageConfig, components } = JSON.parse(content)
-                    components.sort((a, b) => Number(a.css.top) - Number(b.css.top))
-                    renderPage(components).then(html => {
+                    // components.sort((a, b) => Number(a.css.top) - Number(b.css.top))
+                    renderPage({ pageData: content, url: '' }).then(html => {
                         res.set('Content-Type', 'text/html')
+                        res.setHeader('Server', serverInfo)
                         return res.end(html)
                     }).catch(err => {
-                        console.log('1: ', err)
+                        console.log(1, err)
                         return res.status(500).json({ code: -1, msg: 'Internal Server Error' })
                     })
                 } catch (err) {
-                    console.log('2: ', err)
+                    console.log(2, err)
                     return res.status(500).json({ code: -1, msg: 'Internal Server Error' })
                 }
             } else {
@@ -169,7 +173,6 @@ router.get('/active', (req, res, next) => {
             res.json({ code: -1, msg: '', data: {} })
         }
     }).catch(err => {
-        console.log('3: ', err)
         res.json({ code: -1, msg: '查询失败' })
     })
 })
