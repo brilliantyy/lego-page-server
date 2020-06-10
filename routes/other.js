@@ -4,11 +4,11 @@ const fs = require('fs')
 const router = express.Router()
 
 router.get('/banner', (req, res, next) => {
-    fs.readdir(path.join(__dirname, '../public/images/ad'), (err, files) => {
+    fs.readdir(path.join(__dirname, '../public/images/banner'), (err, files) => {
         if (err) {
             res.json({ code: -1, msg: '数据不存在', data: []})
         }
-        const list = files.map(fileName => `http://localhost:3000/images/ad/${fileName}`)
+        const list = files.map(fileName => `http://localhost:3000/images/banner/${fileName}`)
         res.json({ code: 0, msg: '请求成功', data: list })
     })
 })

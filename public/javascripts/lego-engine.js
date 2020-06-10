@@ -3634,7 +3634,7 @@
               switch (_context.prev = _context.next) {
                 case 0:
                   _context.next = 2;
-                  return DataService.fetch({
+                  return _this.$dataService.fetch({
                     source: 'bannerSource'
                   });
 
@@ -3923,7 +3923,7 @@
               switch (_context.prev = _context.next) {
                 case 0:
                   _context.next = 2;
-                  return DataService.fetch({
+                  return _this.$dataService.fetch({
                     source: 'bannerSource'
                   });
 
@@ -11494,9 +11494,14 @@
   }();
 
   var dataCenter = new DataCenter();
+  var DataService = {
+    install: function install(Vue) {
+      Vue.prototype.$dataService = dataCenter;
+    }
+  };
 
   Vue.use(Http);
-  window.DataService = dataCenter;
+  Vue.use(DataService);
   initPage();
 
 }(Vue, crypto));

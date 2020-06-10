@@ -153,13 +153,11 @@ router.get('/active', (req, res, next) => {
         
             if (renderType === 1) {
                 try {
-                    // components.sort((a, b) => Number(a.css.top) - Number(b.css.top))
                     renderPage({ pageData: content, url: '' }).then(html => {
                         res.set('Content-Type', 'text/html')
                         res.setHeader('Server', serverInfo)
                         return res.end(html)
                     }).catch(err => {
-                        console.log(1, err)
                         return res.status(500).json({ code: -1, msg: 'Internal Server Error' })
                     })
                 } catch (err) {
