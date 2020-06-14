@@ -37,7 +37,7 @@ function renderPage ({ url, pageData }) {
                 pageData,
                 sdk,
                 thirdStyles,
-                __Vue__: Vue,
+                Vue,
                 title: data.pageConfig.title,
             }
             

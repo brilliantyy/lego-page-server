@@ -126,7 +126,6 @@ router.post('/publish', (req, res, next) => {
         getDetailWithCreatorId(uid, id).then(result => {
             if (result && result.length) {
 
-                
             }
             fs.writeFile(path.join(__dirname, `../public/docs/${id}.html`), content, (err) => {
                 if (err) {
@@ -158,10 +157,10 @@ router.get('/active', (req, res, next) => {
                         res.setHeader('Server', serverInfo)
                         return res.end(html)
                     }).catch(err => {
+                        console.log(err)
                         return res.status(500).json({ code: -1, msg: 'Internal Server Error' })
                     })
                 } catch (err) {
-                    console.log(2, err)
                     return res.status(500).json({ code: -1, msg: 'Internal Server Error' })
                 }
             } else {

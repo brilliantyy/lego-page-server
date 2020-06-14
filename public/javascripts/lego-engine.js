@@ -3555,6 +3555,10 @@
       options: {
         type: Object,
         "default": function _default() {}
+      },
+      initialState: {
+        type: Object,
+        "default": function _default() {}
       }
     },
     computed: {
@@ -3613,7 +3617,7 @@
     },
     mounted: function mounted() {
       // console.log('result0')
-      this.fetch(); // console.log('result1')
+      this.initSwiper(); // console.log('result1')
       // this.fetch(1)
       // console.log('result2')
       // this.fetch(2)
@@ -3624,47 +3628,88 @@
       this.instance.destroy();
     },
     methods: {
-      fetch: function fetch() {
+      getInitialState: function getInitialState(config) {
         var _this = this;
 
-        return asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+        return new Promise( /*#__PURE__*/function () {
+          var _ref = asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(resolve, reject) {
+            var slides;
+            return regenerator.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    _context.next = 2;
+                    return _this.fetch(config);
+
+                  case 2:
+                    slides = _context.sent;
+                    resolve({
+                      slides: slides
+                    });
+
+                  case 4:
+                  case "end":
+                    return _context.stop();
+                }
+              }
+            }, _callee);
+          }));
+
+          return function (_x, _x2) {
+            return _ref.apply(this, arguments);
+          };
+        }());
+      },
+      initSwiper: function initSwiper() {
+        var _this2 = this;
+
+        var swiperOptions = {
+          loop: true,
+          autoplay: this.options.autoplay,
+          speed: this.options.speed,
+          delay: this.options.delay,
+          effect: this.options.effect,
+          pagination: {
+            el: '.swiper-pagination'
+          }
+        };
+        setTimeout(function () {
+          _this2.instance = new Swiper("#".concat(_this2.id), swiperOptions);
+        }, 20);
+      },
+      fetch: function fetch(config) {
+        var _this3 = this;
+
+        return asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2() {
           var result;
-          return regenerator.wrap(function _callee$(_context) {
+          return regenerator.wrap(function _callee2$(_context2) {
             while (1) {
-              switch (_context.prev = _context.next) {
+              switch (_context2.prev = _context2.next) {
                 case 0:
-                  _context.next = 2;
-                  return _this.$dataService.fetch({
+                  _context2.next = 2;
+                  return _this3.$dataService.fetch({
                     source: 'bannerSource'
                   });
 
                 case 2:
-                  result = _context.sent;
+                  result = _context2.sent;
 
-                  if (result.code === 0 && !!result.data.length) {
-                    _this.slides = result.data.slice(0, _this.options.nums);
-
-                    _this.$nextTick(function () {
-                      var swiperOptions = {
-                        loop: true,
-                        autoplay: _this.options.autoplay,
-                        speed: _this.options.speed,
-                        delay: _this.options.delay,
-                        effect: _this.options.effect,
-                        pagination: {
-                          el: '.swiper-pagination'
-                        }
-                      };
-                      _this.instance = new Swiper("#".concat(_this.id), swiperOptions);
-                    });
+                  if (!(result.code === 0 && !!result.data.length)) {
+                    _context2.next = 5;
+                    break;
                   }
 
-                case 4:
+                  return _context2.abrupt("return", result.data.slice(0, config.options.nums));
+
+                case 5:
+                  return _context2.abrupt("return", []);
+
+                case 6:
                 case "end":
-                  return _context.stop();
+                  return _context2.stop();
               }
             }
-          }, _callee);
+          }, _callee2);
         }))();
       }
     }
@@ -3765,7 +3810,7 @@
           _c(
             "div",
             { staticClass: "swiper-wrapper" },
-            _vm._l(_vm.slides, function(url, index) {
+            _vm._l(_vm.initialState.slides, function(url, index) {
               return _c("div", { key: index, staticClass: "swiper-slide" }, [
                 _c("img", {
                   style: { objectFit: _vm.css.objectFit },
@@ -3844,6 +3889,10 @@
       options: {
         type: Object,
         "default": function _default() {}
+      },
+      initialState: {
+        type: Object,
+        "default": function _default() {}
       }
     },
     computed: {
@@ -3907,61 +3956,108 @@
       }
     },
     mounted: function mounted() {
-      this.fetch();
+      this.initSwiper();
     },
     beforeDestroy: function beforeDestroy() {
       this.instance.destroy();
     },
     methods: {
-      fetch: function fetch() {
+      getInitialState: function getInitialState(config) {
         var _this = this;
 
-        return asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+        return new Promise( /*#__PURE__*/function () {
+          var _ref = asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(resolve, reject) {
+            var slides;
+            return regenerator.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    _context.next = 2;
+                    return _this.fetch(config);
+
+                  case 2:
+                    slides = _context.sent;
+                    resolve({
+                      slides: slides
+                    });
+
+                  case 4:
+                  case "end":
+                    return _context.stop();
+                }
+              }
+            }, _callee);
+          }));
+
+          return function (_x, _x2) {
+            return _ref.apply(this, arguments);
+          };
+        }());
+      },
+      initSwiper: function initSwiper() {
+        var _this2 = this;
+
+        var swiperOptions = {
+          slidesPerView: 'auto',
+          watchSlidesProgress: true,
+          centeredSlides: true,
+          loop: true,
+          autoplay: this.options.autoplay,
+          speed: this.options.speed,
+          delay: this.options.delay,
+          loopedSlides: 3,
+          effect: 'coverflow',
+          coverflowEffect: {
+            rotate: 0,
+            stretch: 10,
+            depth: 80,
+            modifier: 3,
+            slideShadows: true
+          }
+        };
+        /**
+         * this.$nextTick doesn't work when there are more than one swipers exist on the page
+         * setTimeout delay time should >= 4, but with the number of swipers grows, the time
+         * should be bigger too, or there will be unexpected bugs
+         */
+
+        setTimeout(function () {
+          _this2.instance = new Swiper("#".concat(_this2.id), swiperOptions);
+        }, 20);
+      },
+      fetch: function fetch(config) {
+        var _this3 = this;
+
+        return asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2() {
           var result;
-          return regenerator.wrap(function _callee$(_context) {
+          return regenerator.wrap(function _callee2$(_context2) {
             while (1) {
-              switch (_context.prev = _context.next) {
+              switch (_context2.prev = _context2.next) {
                 case 0:
-                  _context.next = 2;
-                  return _this.$dataService.fetch({
+                  _context2.next = 2;
+                  return _this3.$dataService.fetch({
                     source: 'bannerSource'
                   });
 
                 case 2:
-                  result = _context.sent;
+                  result = _context2.sent;
 
-                  if (result.code === 0 && !!result.data.length) {
-                    _this.slides = result.data.slice(0, _this.options.nums);
-
-                    _this.$nextTick(function () {
-                      var swiperOptions = {
-                        slidesPerView: 'auto',
-                        watchSlidesProgress: true,
-                        centeredSlides: true,
-                        loop: true,
-                        autoplay: _this.options.autoplay,
-                        speed: _this.options.speed,
-                        delay: _this.options.delay,
-                        loopedSlides: 3,
-                        effect: 'coverflow',
-                        coverflowEffect: {
-                          rotate: 0,
-                          stretch: 10,
-                          depth: 80,
-                          modifier: 3,
-                          slideShadows: true
-                        }
-                      };
-                      _this.instance = new Swiper("#".concat(_this.id), swiperOptions);
-                    });
+                  if (!(result.code === 0 && !!result.data.length)) {
+                    _context2.next = 5;
+                    break;
                   }
 
-                case 4:
+                  return _context2.abrupt("return", result.data.slice(0, config.options.nums));
+
+                case 5:
+                  return _context2.abrupt("return", []);
+
+                case 6:
                 case "end":
-                  return _context.stop();
+                  return _context2.stop();
               }
             }
-          }, _callee);
+          }, _callee2);
         }))();
       }
     }
@@ -3987,7 +4083,7 @@
           _c(
             "div",
             { staticClass: "swiper-wrapper" },
-            _vm._l(_vm.slides, function(url, index) {
+            _vm._l(_vm.initialState.slides, function(url, index) {
               return _c(
                 "div",
                 {
@@ -4058,7 +4154,7 @@
     data: function data() {
       return {
         instance: null,
-        slides: this.options.items
+        slides: this.options && this.options.items
       };
     },
     props: {
@@ -4436,12 +4532,12 @@
   function registerComponents() {
     var components = importAll(function () {
       var map = {
-        'D:/projects/page-engine/src/components/carousel/carouselNormal.vue': __vue_component__,
-        'D:/projects/page-engine/src/components/carousel/carouselRotate.vue': __vue_component__$1,
-        'D:/projects/page-engine/src/components/cmpCarousel/cmpCarousel.vue': __vue_component__$2,
-        'D:/projects/page-engine/src/components/cmpDiv/cmpDiv.vue': __vue_component__$3,
-        'D:/projects/page-engine/src/components/cmpImage/cmpImage.vue': __vue_component__$4,
-        'D:/projects/page-engine/src/components/cmpText/cmpText.vue': __vue_component__$5
+        '/Users/yujia/Documents/projects/lego-page-engine/src/components/carousel/carouselNormal.vue': __vue_component__,
+        '/Users/yujia/Documents/projects/lego-page-engine/src/components/carousel/carouselRotate.vue': __vue_component__$1,
+        '/Users/yujia/Documents/projects/lego-page-engine/src/components/cmpCarousel/cmpCarousel.vue': __vue_component__$2,
+        '/Users/yujia/Documents/projects/lego-page-engine/src/components/cmpDiv/cmpDiv.vue': __vue_component__$3,
+        '/Users/yujia/Documents/projects/lego-page-engine/src/components/cmpImage/cmpImage.vue': __vue_component__$4,
+        '/Users/yujia/Documents/projects/lego-page-engine/src/components/cmpText/cmpText.vue': __vue_component__$5
       };
 
       var req = function req(key) {
@@ -4462,36 +4558,96 @@
   }
 
   function constructPage() {
-    if (window.__PAGE_DATA__) {
-      var cmps = [];
-      var _PAGE_DATA__ = __PAGE_DATA__,
-          pageConfig = _PAGE_DATA__.pageConfig,
-          componentsConfig = _PAGE_DATA__.componentsConfig;
-      setPageData(pageConfig);
+    return _constructPage.apply(this, arguments);
+  }
 
-      if (!!componentsConfig.length) {
-        componentsConfig.forEach(function (data) {
-          var CmpConstructor = Vue.component(data.name);
+  function _constructPage() {
+    _constructPage = asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+      var cmps, _PAGE_DATA__, pageConfig, componentsConfig, i, data, CmpConstructor, initialState, tempInstance, getInitialState, cmpInstance, rootEl;
 
-          if (typeof CmpConstructor === 'function') {
-            var cmpInstance = new CmpConstructor({
-              propsData: {
-                id: data.id,
-                css: transformCss(data.css),
-                options: data.options
+      return regenerator.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!window.__PAGE_DATA__) {
+                _context.next = 25;
+                break;
               }
-            }).$mount();
-            cmps.push(cmpInstance.$el);
-          }
-        });
-      }
 
-      var rootEl = document.getElementById('lego-app');
-      cmps.forEach(function (el) {
-        rootEl.appendChild(el);
-      });
-      console.log(__PAGE_DATA__);
-    }
+              cmps = [];
+              _PAGE_DATA__ = __PAGE_DATA__, pageConfig = _PAGE_DATA__.pageConfig, componentsConfig = _PAGE_DATA__.componentsConfig;
+              setPageData(pageConfig);
+
+              if (!componentsConfig.length) {
+                _context.next = 22;
+                break;
+              }
+
+              i = 0;
+
+            case 6:
+              if (!(i < componentsConfig.length)) {
+                _context.next = 22;
+                break;
+              }
+
+              data = componentsConfig[i];
+              CmpConstructor = Vue.component(data.name);
+
+              if (!(typeof CmpConstructor === 'function')) {
+                _context.next = 19;
+                break;
+              }
+
+              initialState = {};
+              tempInstance = new CmpConstructor();
+              getInitialState = tempInstance.$options.methods.getInitialState;
+
+              if (!(typeof getInitialState === 'function')) {
+                _context.next = 17;
+                break;
+              }
+
+              _context.next = 16;
+              return getInitialState.call(tempInstance, {
+                id: data.id,
+                options: data.options
+              });
+
+            case 16:
+              initialState = _context.sent;
+
+            case 17:
+              cmpInstance = new CmpConstructor({
+                propsData: {
+                  id: data.id,
+                  css: transformCss(data.css),
+                  options: data.options,
+                  initialState: initialState
+                }
+              }).$mount();
+              cmps.push(cmpInstance.$el);
+
+            case 19:
+              i++;
+              _context.next = 6;
+              break;
+
+            case 22:
+              rootEl = document.getElementById('lego-app');
+              cmps.forEach(function (el) {
+                rootEl.appendChild(el);
+              });
+              console.log(__PAGE_DATA__);
+
+            case 25:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return _constructPage.apply(this, arguments);
   }
 
   function setPageData(pageConfig) {
@@ -11207,8 +11363,6 @@
               callbacks = _this$requestMap$get.callbacks,
               cacheData = _this$requestMap$get.cacheData;
 
-          console.log('status: ', status);
-
           switch (status) {
             case 0:
               // 等待中 
@@ -11493,10 +11647,9 @@
     return DataCenter;
   }();
 
-  var dataCenter = new DataCenter();
   var DataService = {
     install: function install(Vue) {
-      Vue.prototype.$dataService = dataCenter;
+      Vue.prototype.$dataService = new DataCenter();
     }
   };
 
