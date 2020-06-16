@@ -30,11 +30,13 @@ function renderPage ({ url, pageData }) {
     return new Promise((resolve, reject) => {
         try {
             const data = JSON.parse(pageData)
+            const pageStyle = preparePageStyle(data)
             const sdk = prepareThirdPartySDK(data)
             const thirdStyles = prepareThirdPartyStyles(data)
             const context = {
                 url,
                 pageData,
+                pageStyle,
                 sdk,
                 thirdStyles,
                 Vue,
@@ -52,6 +54,11 @@ function renderPage ({ url, pageData }) {
             reject(error)
         }
     })
+}
+
+function preparePageStyle(data) {
+    const { pageHeight, backgroundColor, backgroundImage, backgroundRepeat, backgroundSize } = data.pageConfig
+    return `style=height:${pageHeight}px;background-color:${backgroundColor};background-image:url(${backgroundImage});background-repeat:${backgroundRepeat};background-size:${backgroundSize};`
 }
 
 function prepareThirdPartySDK(data) {
